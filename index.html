@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎈 Build Your Dream Mall! 🎈</title>
+    <title>🎈 My Mall Mind Map! 🎈</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
@@ -11,231 +11,226 @@
     <style>
         body {
             font-family: 'Fredoka', sans-serif;
-            background-color: #ffeb3b; /* Bright, happy yellow background */
+            background-color: #ffeb3b;
             background-image: radial-gradient(#fff 20%, transparent 20%), radial-gradient(#fff 20%, transparent 20%);
             background-size: 30px 30px;
             background-position: 0 0, 15px 15px;
             color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #ff5722;
+            margin: 0 0 10px 0;
+            font-size: 2.2rem;
+            -webkit-text-stroke: 1px #333;
+            text-shadow: 2px 2px 0px #ffccbc;
+            text-align: center;
+        }
+
+        .instructions {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 3px solid #333;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #4caf50;
+            box-shadow: 0 4px 0px #333;
+            text-align: center;
+        }
+
+        /* The Mind Map Board */
+        .mindmap-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .side-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Central Core */
+        .center-hub {
+            background-color: #ff5722;
+            color: white;
+            border: 4px solid #333;
+            border-radius: 50%;
+            aspect-ratio: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .game-container {
-            background-color: #ffffff;
-            padding: 35px;
-            border-radius: 30px; /* Extra rounded corners */
-            box-shadow: 0 12px 0px #e0a800, 0 20px 30px rgba(0,0,0,0.15); /* Cool 3D effect box */
-            max-width: 550px;
-            width: 90%;
-            text-align: center;
-            border: 4px solid #333; /* Thick, clear cartoon borders */
-        }
-        h1 {
-            color: #ff5722; /* Fun orange title */
-            margin-top: 0;
-            font-size: 2.3rem;
-            -webkit-text-stroke: 1px #333;
-            text-shadow: 2px 2px 0px #ffccbc;
-        }
-        .progress {
-            font-size: 1.2rem;
-            color: #4caf50; /* Bright green text */
-            font-weight: 600;
-            margin-bottom: 15px;
-            background: #e8f5e9;
-            padding: 5px 15px;
-            border-radius: 20px;
-            display: inline-block;
-        }
-        .question {
             font-size: 1.6rem;
-            font-weight: 600;
-            margin-bottom: 25px;
-            color: #2196f3; /* Sea blue text */
-            min-height: 50px;
+            font-weight: bold;
+            box-shadow: 0 8px 0px #333;
+            text-shadow: 1px 1px 0px #000;
+            padding: 20px;
+            text-align: center;
         }
-        .options {
+
+        /* Droppable Map Nodes */
+        .map-node {
+            background: #e3f2fd;
+            border: 3px dashed #2196f3;
+            border-radius: 20px;
+            padding: 15px;
+            min-height: 90px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
         }
-        button {
-            font-family: 'Fredoka', sans-serif;
-            background-color: #9c27b0; /* Bright purple buttons */
+
+        .map-node.hovered {
+            background: #bbdefb;
+            border-style: solid;
+            transform: scale(1.05);
+        }
+
+        .node-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0d47a1;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        /* Draggable Idea Pool */
+        .ideas-pool {
+            background: white;
+            border: 4px solid #333;
+            border-radius: 25px;
+            padding: 20px;
+            width: 90%;
+            max-width: 960px;
+            box-shadow: 0 8px 0px #333;
+        }
+
+        .pool-title {
+            font-size: 1.4rem;
+            color: #9c27b0;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .ideas-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        /* Draggable Bubble Cards */
+        .idea-card {
+            background-color: #9c27b0;
             color: white;
             border: 3px solid #333;
-            padding: 18px 25px;
-            font-size: 1.3rem; /* Large text for kids to read easily */
+            padding: 10px 18px;
+            font-size: 1.1rem;
             border-radius: 20px;
+            cursor: grab;
+            box-shadow: 0 5px 0px #333;
+            user-select: none;
+            transition: transform 0.1s;
+            display: inline-block;
+        }
+
+        .idea-card:active {
+            cursor: grabbing;
+        }
+
+        .idea-card.dragging {
+            opacity: 0.5;
+            transform: scale(0.9);
+        }
+
+        /* Specific node category colors when a card is dropped */
+        .map-node .idea-card {
+            box-shadow: none;
+            cursor: default;
+            width: 90%;
+            text-align: center;
+            font-size: 1rem;
+            padding: 8px;
+        }
+
+        /* Submit Button Area */
+        .action-zone {
+            margin-top: 20px;
+        }
+
+        .finish-btn {
+            font-family: 'Fredoka', sans-serif;
+            background-color: #4caf50;
+            color: white;
+            border: 3px solid #333;
+            padding: 15px 35px;
+            font-size: 1.5rem;
+            border-radius: 25px;
             cursor: pointer;
-            transition: transform 0.1s, background-color 0.2s;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 6px 0px #333; /* 3D button effect */
+            box-shadow: 0 6px 0px #1b5e20;
+            display: none;
         }
-        button:hover {
-            background-color: #e91e63; /* Turns pink on hover */
-            transform: translateY(-2px);
-        }
-        button:active {
+
+        .finish-btn:active {
             transform: translateY(4px);
             box-shadow: 0 2px 0px #333;
         }
-        .result-title {
-            font-size: 2rem;
-            color: #4caf50;
-            margin-bottom: 20px;
-            font-weight: bold;
-            -webkit-text-stroke: 1px #333;
-        }
-        .result-text {
-            font-size: 1.3rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            background: #fff9c4;
-            padding: 15px;
-            border-radius: 15px;
-            border: 2px dashed #ffb300;
-        }
-        .restart-btn {
-            background-color: #4caf50;
+
+        /* Results Screen overlay */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
             justify-content: center;
-            box-shadow: 0 6px 0px #1b5e20;
+            align-items: center;
+            z-index: 100;
         }
-        .restart-btn:hover {
-            background-color: #81c784;
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            border: 4px solid #333;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 0px #333;
+        }
+
+        @media (max-width: 768px) {
+            .mindmap-container {
+                grid-template-columns: 1fr;
+            }
+            .center-hub {
+                display: none; /* Hide center circle on tiny screens to save space */
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="game-container" id="game-box">
-    <h1 id="title">🏗️ Dream Mall Builder</h1>
-    <div class="progress" id="progress">Round 1 of 5</div>
-    <div class="question" id="question-text">Where is your mall?</div>
-    <div class="options" id="options-box"></div>
-</div>
+    <h1>🏗️ My Mall Mind Map</h1>
+    <div class="instructions">👉 Drag an idea bubble and drop it into a matching blueprint box!</div>
 
-<script>
-    const questions = [
-        {
-            text: "Where is your mall? 🌍",
-            options: [
-                { text: "🚀 Space: On a spaceship near Mars!", type: "space" },
-                { text: "🌳 Jungle: In a warm forest with friendly monkeys!", type: "jungle" },
-                { text: "❄️ Ice: In the snowy mountains with smooth ice floors!", type: "ice" }
-            ]
-        },
-        {
-            text: "How do shoppers travel to your mall? 🚲",
-            options: [
-                { text: "🚀 They zoom up in small space rockets!", type: "space" },
-                { text: "🌳 They ride electric bicycles on wooden paths!", type: "jungle" },
-                { text: "❄️ They travel on fast dog sleds through the soft snow!", type: "ice" }
-            ]
-        },
-        {
-            text: "What yummy restaurants will be inside? 🍔",
-            options: [
-                { text: "🚀 Floating Food: A café where your burgers float in the air!", type: "space" },
-                { text: "🌳 Treehouse Café: Kitchen in the trees with sweet, fresh fruit juice!", type: "jungle" },
-                { text: "❄️ Chilly Soup: A cafe made of ice that serves hot soup and cocoa!", type: "ice" }
-            ]
-        },
-        {
-            text: "How do people go up and down to different floors? 🛗",
-            options: [
-                { text: "🚀 They wear bouncy boots that help them fly up!", type: "space" },
-                { text: "🌳 They walk across fun swinging rope bridges!", type: "jungle" },
-                { text: "❄️ They sit on a snowy ski-lift inside the mall!", type: "ice" }
-            ]
-        },
-        {
-            text: "Oh no! What is the big danger in your mall? ⚠️",
-            options: [
-                { text: "🚀 The windows might crack and lose all the air!", type: "space" },
-                { text: "🌳 The wooden bridges get very wet and slippery!", type: "jungle" },
-                { text: "❄️ The floor is real ice, so people slip and fall down!", type: "ice" }
-            ]
-        }
-    ];
-
-    let currentQuestionIndex = 0;
-    let scores = { space: 0, jungle: 0, ice: 0 };
-
-    const progressEl = document.getElementById("progress");
-    const questionTextEl = document.getElementById("question-text");
-    const optionsBoxEl = document.getElementById("options-box");
-    const titleEl = document.getElementById("title");
-
-    function loadQuestion() {
-        if (currentQuestionIndex < questions.length) {
-            let currentQuestion = questions[currentQuestionIndex];
-            progressEl.innerText = `✨ Step ${currentQuestionIndex + 1} of ${questions.length} ✨`;
-            questionTextEl.innerText = currentQuestion.text;
-            optionsBoxEl.innerHTML = "";
-
-            currentQuestion.options.forEach(option => {
-                let btn = document.createElement("button");
-                btn.innerText = option.text;
-                btn.onclick = () => selectOption(option.type);
-                optionsBoxEl.appendChild(btn);
-            });
-        } else {
-            showResult();
-        }
-    }
-
-    function selectOption(type) {
-        scores[type]++;
-        currentQuestionIndex++;
-        loadQuestion();
-    }
-
-    function showResult() {
-        progressEl.style.display = "none";
-        questionTextEl.style.display = "none";
-        optionsBoxEl.innerHTML = "";
-        titleEl.innerText = "🎉 Your Mall is Built! 🎉";
-
-        let finalTheme = "";
-        let description = "";
-
-        if (scores.space > scores.jungle && scores.space > scores.ice) {
-            finalTheme = "The Galaxy Center! 🚀💫";
-            description = "Wow! Your mall is a high-tech space playground. Shoppers love flying around in gravity boots and catching floating burgers. Just make sure the windows stay closed!";
-        } else if (scores.jungle > scores.space && scores.jungle > scores.ice) {
-            finalTheme = "The Green Adventure Mall! 🌳🐒";
-            description = "Amazing! Your mall is a beautiful jungle park. Visitors love meeting the monkeys, drinking fresh juice, and walking high up in the trees. Watch out for slippery bridges!";
-        } else if (scores.ice > scores.space && scores.ice > scores.jungle) {
-            finalTheme = "The Winter Palace! ❄️🏰";
-            description = "Brrr! Your mall is a freezing, beautiful wonderland. People enjoy riding the cozy ski-lift and drinking warm hot chocolate, but walking on ice is a balancing game!";
-        } else {
-            finalTheme = "The Crazy Mashup Mall! 🤪🌀";
-            description = "Super cool! You mixed space rockets, jungle trees, and ski-lifts together. Your mall is absolutely wild, unique, and makes everyone laugh!";
-        }
-
-        optionsBoxEl.innerHTML = `
-            <div class="result-title">${finalTheme}</div>
-            <div class="result-text">${description}</div>
-            <button class="restart-btn" onclick="restartGame()">Play Again 🔄</button>
-        `;
-    }
-
-    function restartGame() {
-        currentQuestionIndex = 0;
-        scores = { space: 0, jungle: 0, ice: 0 };
-        progressEl.style.display = "inline-block";
-        questionTextEl.style.display = "block";
-        titleEl.innerText = "🏗️ Dream Mall Builder";
-        loadQuestion();
-    }
-
-    loadQuestion();
-</script>
-
-</body>
-</html>
+    <div class="mindmap-container">
+        <div class="side-column">
+            <div class="map-node" data-category="location">
+                <div class="node-title">📍 1. Location
