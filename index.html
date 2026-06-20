@@ -233,4 +233,145 @@
     <div class="mindmap-container">
         <div class="side-column">
             <div class="map-node" data-category="location">
-                <div class="node-title">📍 1. Location
+                <div class="node-title">📍 1. Location</div>
+            </div>
+            <div class="map-node" data-category="travel">
+                <div class="node-title">🚀 2. How to Travel</div>
+            </div>
+        </div>
+
+        <div class="center-hub">
+            🏢<br>MY<br>MALL
+        </div>
+
+        <div class="side-column">
+            <div class="map-node" data-category="restaurant">
+                <div class="node-title">🍔 3. Restaurant</div>
+            </div>
+            <div class="map-node" data-category="floors">
+                <div class="node-title">🛗 4. Moving Floors</div>
+            </div>
+            <div class="map-node" data-category="danger">
+                <div class="node-title">⚠️ 5. Big Danger</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ideas-pool">
+        <div class="pool-title">💡 Idea Bubbles</div>
+        <div class="ideas-grid" id="pool-grid">
+            <div class="idea-card" draggable="true" data-type="space" data-category="location">Spaceship near Mars 🛸</div>
+            <div class="idea-card" draggable="true" data-type="space" data-category="travel">Fly in space rockets 🚀</div>
+            <div class="idea-card" draggable="true" data-type="space" data-category="restaurant">Floating Burgers 🍔</div>
+            <div class="idea-card" draggable="true" data-type="space" data-category="floors">Bouncy flight boots 🥾</div>
+            <div class="idea-card" draggable="true" data-type="space" data-category="danger">Broken windows/No air 💨</div>
+
+            <div class="idea-card" draggable="true" data-type="jungle" data-category="location">Warm Monkey Forest 🌳</div>
+            <div class="idea-card" draggable="true" data-type="jungle" data-category="travel">Electric bicycles 🚲</div>
+            <div class="idea-card" draggable="true" data-type="jungle" data-category="restaurant">Treehouse Fruit Juice 🥤</div>
+            <div class="idea-card" draggable="true" data-type="jungle" data-category="floors">Swinging rope bridges 🪜</div>
+            <div class="idea-card" draggable="true" data-type="jungle" data-category="danger">Wet, slippery wood 💧</div>
+
+            <div class="idea-card" draggable="true" data-type="ice" data-category="location">Snowy Ice Mountain ❄️</div>
+            <div class="idea-card" draggable="true" data-type="ice" data-category="travel">Fast dog sleds 🐕</div>
+            <div class="idea-card" draggable="true" data-type="ice" data-category="restaurant">Ice Castle Hot Cocoa ☕</div>
+            <div class="idea-card" draggable="true" data-type="ice" data-category="floors">Snowy Ski-lifts 💺</div>
+            <div class="idea-card" draggable="true" data-type="ice" data-category="danger">Slipping on hard ice 🧊</div>
+        </div>
+    </div>
+
+    <div class="action-zone">
+        <button class="finish-btn" id="submit-map" onclick="calculateResult()">See My Mall! 🎉</button>
+    </div>
+
+    <div class="modal" id="result-modal">
+        <div class="modal-content">
+            <h2 style="color:#ff5722; font-size:2rem; margin:0;" id="result-title">Your Mall Profile</h2>
+            <p id="result-text" style="font-size:1.2rem; line-height:1.5; margin:20px 0;"></p>
+            <button class="idea-card" style="background:#4caf50; cursor:pointer;" onclick="location.reload()">Reset Map 🔄</button>
+        </div>
+    </div>
+
+<script>
+    const cards = document.querySelectorAll('.idea-card');
+    const nodes = document.querySelectorAll('.map-node');
+    const poolGrid = document.getElementById('pool-grid');
+    const submitBtn = document.getElementById('submit-map');
+    
+    let draggedCard = null;
+    let placedCount = 0;
+    let finalScores = { space: 0, jungle: 0, ice: 0 };
+
+    // Set up Drag Events for items
+    cards.forEach(card => {
+        card.addEventListener('dragstart', () => {
+            draggedCard = card;
+            card.classList.add('dragging');
+        });
+
+        card.addEventListener('dragend', () => {
+            card.classList.remove('dragging');
+            draggedCard = null;
+        });
+    });
+
+    // Set up Drop Zones for boxes
+    nodes.forEach(node => {
+        node.addEventListener('dragover', (e) => {
+            e.preventDefault(); // Required to allow drop
+            if(node.dataset.category === draggedCard.dataset.category && !node.querySelector('.idea-card')) {
+                node.classList.add('hovered');
+            }
+        });
+
+        node.addEventListener('dragleave', () => {
+            node.classList.remove('hovered');
+        });
+
+        node.addEventListener('drop', () => {
+            node.classList.remove('hovered');
+            // Rule check: matching categories and zone must be empty
+            if (node.dataset.category === draggedCard.dataset.category && !node.querySelector('.idea-card')) {
+                node.appendChild(draggedCard);
+                finalScores[draggedCard.dataset.type]++;
+                placedCount++;
+                
+                // Show the finish button when all 5 spaces are filled
+                if (placedCount === 5) {
+                    submitBtn.style.display = 'block';
+                }
+            }
+        });
+    });
+
+    // Score Calculator and Story builder
+    function calculateResult() {
+        const modal = document.getElementById('result-modal');
+        const title = document.getElementById('result-title');
+        const text = document.getElementById('result-text');
+        
+        let finalTheme = "";
+        let description = "";
+
+        if (finalScores.space > finalScores.jungle && finalScores.space > finalScores.ice) {
+            finalTheme = "The Galaxy Center! 🚀💫";
+            description = "Your mind map made a high-tech space playground. Shoppers love flying around in gravity boots and catching floating burgers. Just make sure the windows stay closed!";
+        } else if (finalScores.jungle > finalScores.space && finalScores.jungle > finalScores.ice) {
+            finalTheme = "The Green Adventure Mall! 🌳🐒";
+            description = "Amazing mind map! Your mall is a beautiful jungle park. Visitors love meeting the monkeys, drinking fresh juice, and walking high up in the trees. Watch out for slippery bridges!";
+        } else if (finalScores.ice > finalScores.space && finalScores.ice > finalScores.jungle) {
+            finalTheme = "The Winter Palace! ❄️🏰";
+            description = "Brrr! Your mind map built a freezing, beautiful wonderland. People enjoy riding the cozy ski-lift and drinking warm hot chocolate, but walking on ice is a balancing game!";
+        } else {
+            finalTheme = "The Mixed-Up Reality Mall! 🤪🌀";
+            description = "Super cool map! You mixed ideas together (like space rockets and jungle trees!). Your mall is absolutely wild, creative, and completely one-of-a-kind!";
+        }
+
+        title.innerText = finalTheme;
+        text.innerText = description;
+        modal.style.display = 'flex';
+    }
+</script>
+
+</body>
+</html>
