@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build Your Dream Mall!</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .game-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+        .progress {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .question {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 25px;
+            min-height: 60px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            text-align: left;
+        }
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        .result-title {
+            font-size: 1.4rem;
+            color: #27ae60;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .result-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .restart-btn {
+            background-color: #2ecc71;
+            text-align: center;
+        }
+        .restart-btn:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container" id="game-box">
+    <h1 id="title">🏗️ Dream Mall Builder</h1>
+    <div class="progress" id="progress">Round 1 of 5</div>
+    <div class="question" id="question-text">Where is your mall?</div>
+    <div class="options" id="options-box"></div>
+</div>
+
+<script>
+    const questions = [
+        {
+            text: "Where is your mall? 🌍",
+            options: [
+                { text: "🚀 Space: On a spaceship near Mars.", type: "space" },
+                { text: "🌳 Jungle: In a warm rainforest with monkeys.", type: "jungle" },
+                { text: "❄️ Ice: In the snowy mountains with ice floors.", type: "ice" }
+            ]
+        },
+        {
+            text: "How do shoppers travel to your mall? 🚲",
+            options: [
+                { text: "🚀 They fly in small space rockets.", type: "space" },
+                { text: "🌳 They ride electric bicycles on wooden paths.", type: "jungle" },
+                { text: "❄️ They travel on fast dog sleds through snow.", type: "ice" }
+            ]
+        },
+        {
+            text: "What restaurants will be inside? 🍔",
+            options: [
+                { text: "🚀 Floating Food: A café where burgers float in the air!", type: "space" },
+                { text: "🌳 Treehouse Café: Kitchen in the trees with fresh juice.", type: "jungle" },
+                { text: "❄️ Chilly Soup: A cafe made of ice that serves hot soup.", type: "ice" }
+            ]
+        },
+        {
+            text: "How do people go to different floors? 🛗",
+            options: [
+                { text: "🚀 They use special boots that help them fly up.", type: "space" },
+                { text: "🌳 They walk across moving rope bridges.", type: "jungle" },
+                { text: "❄️ They sit on a ski-lift inside the mall.", type: "ice" }
+            ]
+        },
+        {
+            text: "What is the danger in your mall? ⚠️",
+            options: [
+                { text: "🚀 The windows might break and lose all the air!", type: "space" },
+                { text: "🌳 The wooden bridges are very wet and slippery.", type: "jungle" },
+                { text: "❄️ The floor is real ice, so people fall down easily.", type: "ice" }
+            ]
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let scores = { space: 0, jungle: 0, ice: 0 };
+
+    const progressEl = document.getElementById("progress");
+    const questionTextEl = document.getElementById("question-text");
+    const optionsBoxEl = document.getElementById("options-box");
+    const titleEl = document.getElementById("title");
+
+    function loadQuestion() {
+        if (currentQuestionIndex < questions.length) {
+            let currentQuestion = questions[currentQuestionIndex];
+            progressEl.innerText = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+            questionTextEl.innerText = currentQuestion.text;
+            optionsBoxEl.innerHTML = "";
+
+            currentQuestion.options.forEach(option => {
+                let btn = document.createElement("button");
+                btn.innerText = option.text;
+                btn.onclick = () => selectOption(option.type);
+                optionsBoxEl.appendChild(btn);
+            });
+        } else {
+            showResult();
+        }
+    }
+
+    function selectOption(type) {
+        scores[type]++;
+        currentQuestionIndex++;
+        loadQuestion();
+    }
+
+    function showResult() {
+        progressEl.style.display = "none";
+        questionTextEl.style.display = "none";
+        optionsBoxEl.innerHTML = "";
+        titleEl.innerText = "🎉 Your Mall is Ready!";
+
+        let finalTheme = "";
+        let description = "";
+
+        if (scores.space > scores.jungle && scores.space > scores.ice) {
+            finalTheme = "The Galaxy Center! 🚀💫";
+            description = "Your mall is a high-tech space paradise. Shoppers love flying around in gravity boots and eating floating burgers. Just make sure the windows don't break!";
+        } else if (scores.jungle > scores.space && scores.jungle > scores.ice) {
+            finalTheme = "The Green Adventure Mall! 🌳🐒";
+            description = "Your mall is a beautiful nature park. Visitors love the monkeys, fresh juices, and walking in the trees. Watch out for wet bridges!";
+        } else if (scores.ice > scores.space && scores.ice > scores.jungle) {
+            finalTheme = "The Winter Palace! ❄️🏰";
+            description = "Your mall is a freezing, beautiful wonderland. People enjoy riding the ski-lift and drinking hot chocolate, but walking on ice is difficult!";
+        } else {
+            finalTheme = "The Crazy Mashup Mall! 🤪🌀";
+            description = "Wow! You mixed space rockets, jungle trees, and ski-lifts together. Your mall is absolutely wild, unique, and very funny!";
+        }
+
+        optionsBoxEl.innerHTML = `
+            <div class="result-title">${finalTheme}</div>
+            <div class="result-text">${description}</div>
+            <button class="restart-btn" onclick="restartGame()">Play Again 🔄</button>
+        `;
+    }
+
+    function restartGame() {
+        currentQuestionIndex = 0;
+        scores = { space: 0, jungle: 0, ice: 0 };
+        progressEl.style.display = "block";
+        questionTextEl.style.display = "block";
+        titleEl.innerText = "🏗️ Dream Mall Builder";
+        loadQuestion();
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
